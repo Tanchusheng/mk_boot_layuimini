@@ -41,40 +41,50 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
             options.loadingTime = options.loadingTime || 1;
             options.pageAnim = options.pageAnim || false;
             options.maxTabNum = options.maxTabNum || 20;
-            $.getJSON(options.iniUrl, function (data) {
-                if (data == null) {
-                    miniAdmin.error('暂无菜单信息')
-                } else {
-                    miniAdmin.renderLogo(data.logoInfo);
-                    miniAdmin.renderClear(options.clearUrl);
-                    miniAdmin.renderHome(data.homeInfo);
-                    miniAdmin.renderAnim(options.pageAnim);
-                    miniAdmin.listen();
-                    miniMenu.render({
-                        menuList: data.menuInfo,
-                        multiModule: options.multiModule,
-                        menuChildOpen: options.menuChildOpen
-                    });
-                    miniTab.render({
-                        filter: 'layuiminiTab',
-                        urlHashLocation: options.urlHashLocation,
-                        multiModule: options.multiModule,
-                        menuChildOpen: options.menuChildOpen,
-                        maxTabNum: options.maxTabNum,
-                        menuList: data.menuInfo,
-                        homeInfo: data.homeInfo,
-                        listenSwichCallback: function () {
-                            miniAdmin.renderDevice();
+            $.get({
+                url: options.iniUrl,
+                dataType: "json",
+                timeout:300000,
+                xhrFields:{withCredentials: true},
+                success: function (res) {
+                    if(res.success){
+                        // miniAdmin.renderLogo(options.logoInfo);
+                        miniAdmin.renderClear(options.clearUrl);
+                        // miniAdmin.renderHome(options.homeInfo);
+                        miniAdmin.renderAnim(options.pageAnim);
+                        miniAdmin.listen();
+                        miniMenu.render({
+                            menuList: res.data,
+                            multiModule: options.multiModule,
+                            menuChildOpen: options.menuChildOpen
+                        });
+                        miniTab.render({
+                            filter: 'layuiminiTab',
+                            urlHashLocation: options.urlHashLocation,
+                            multiModule: options.multiModule,
+                            menuChildOpen: options.menuChildOpen,
+                            maxTabNum: options.maxTabNum,
+                            menuList:  res.data,
+                           // homeInfo: options.homeInfo,
+                            listenSwichCallback: function () {
+                                miniAdmin.renderDevice();
+                            }
+                        });
+                        miniTheme.render({
+                            bgColorDefault: options.bgColorDefault,
+                            listen: true,
+                        });
+                        miniAdmin.deleteLoader(options.loadingTime);
+                    }else{
+                        if(res.code=='-1'){//未登录，直接跳转到登录页面
+                            parent.location.href = "page/login.html";
                         }
-                    });
-                    miniTheme.render({
-                        bgColorDefault: options.bgColorDefault,
-                        listen: true,
-                    });
-                    miniAdmin.deleteLoader(options.loadingTime);
+                        miniAdmin.error('暂无菜单信息')
+                    }
+                },
+                error: function () {
+                    miniAdmin.error('菜单接口有误');
                 }
-            }).fail(function () {
-                miniAdmin.error('菜单接口有误');
             });
         },
 
@@ -83,7 +93,7 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
          * @param data
          */
         renderLogo: function (data) {
-            var html = '<a href="' + data.href + '"><img src="' + data.image + '" alt="logo"><h1>' + data.title + '</h1></a>';
+            var html = '<a href=""><img src="images/logo.png" alt="logo"><h1>后台管理系统</h1></a>';
             $('.layuimini-logo').html(html);
         },
 
@@ -92,10 +102,10 @@ layui.define(["jquery", "miniMenu", "element","miniTab", "miniTheme"], function 
          * @param data
          */
         renderHome: function (data) {
-            sessionStorage.setItem('layuiminiHomeHref', data.href);
-            $('#layuiminiHomeTabId').html('<span class="layuimini-tab-active"></span><span class="disable-close">' + data.title + '</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>');
-            $('#layuiminiHomeTabId').attr('lay-id', data.href);
-            $('#layuiminiHomeTabIframe').html('<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"  src="' + data.href + '"></iframe>');
+            sessionStorage.setItem('layuiminiHomeHref', 'page/welcome.html?t=1');
+            $('#layuiminiHomeTabId').html('<span class="layuimini-tab-active"></span><span class="disable-close">首页</span><i class="layui-icon layui-unselect layui-tab-close">ဆ</i>');
+            $('#layuiminiHomeTabId').attr('lay-id', 'page/welcome.html?t=1');
+            $('#layuiminiHomeTabIframe').html('<iframe width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"  src="page/welcome.html?t=1"></iframe>');
         },
 
         /**

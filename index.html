@@ -129,6 +129,7 @@
 </div>
 <script src="lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="js/lay-config.js?v=2.0.0" charset="utf-8"></script>
+<script src="api/baseApi.js"></script>
 <script>
     layui.use(['jquery', 'layer', 'miniAdmin','miniTongji'], function () {
         var $ = layui.jquery,
@@ -137,7 +138,7 @@
             miniTongji = layui.miniTongji;
 
         var options = {
-            iniUrl: "api/init.json",    // 初始化接口
+            iniUrl: baseUrl+"system/user/getUserMenu",    // 初始化接口
             clearUrl: "api/clear.json", // 缓存清理接口
             urlHashLocation: true,      // 是否打开hash定位
             bgColorDefault: false,      // 主题默认配置
@@ -160,9 +161,28 @@
         });
 
         $('.login-out').on("click", function () {
-            layer.msg('退出登录成功', function () {
-                window.location = 'page/login.html';
-            });
+            $.get({
+                url:baseUrl+"systemLogout",
+                dataType: "json",
+                timeout: 300000,
+                xhrFields:{withCredentials: true},
+                success:function (res) {
+                    if (res.success){
+                        //清除本地登录信息
+                        layui.sessionData("loginUserData",null);
+                        layer.msg('退出登录成功', function () {
+                            window.location = 'page/login.html';
+                        });
+                    }else{
+                        layer.msg(res.message);
+                    }
+                },
+                error:function () {
+                    layer.alert('网络连接错误，请联系管理员！')
+                    layer.close(loadIndex);
+                }
+            })
+
         });
     });
 </script>

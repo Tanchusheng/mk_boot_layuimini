@@ -56,7 +56,7 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
         compileMenu: function(menu,isSub){
             var menuHtml = '<li {{#if( d.menu){ }}  data-menu="{{d.menu}}" {{#}}} class="layui-nav-item menu-li {{d.childOpenClass}} {{d.className}}"  {{#if( d.id){ }}  id="{{d.id}}" {{#}}}> <a {{#if( d.href){ }} layuimini-href="{{d.href}}" {{#}}} {{#if( d.target){ }}  target="{{d.target}}" {{#}}} href="javascript:;">{{#if( d.icon){ }}  <i class="{{d.icon}}"></i> {{#}}} <span class="layui-left-nav">{{d.title}}</span></a>  {{# if(d.children){}} {{d.children}} {{#}}} </li>' ;
             if(isSub){
-                menuHtml = '<dd class="menu-dd {{d.childOpenClass}} {{ d.className }}"> <a href="javascript:;"  {{#if( d.menu){ }}  data-menu="{{d.menu}}" {{#}}} {{#if( d.id){ }}  id="{{d.id}}" {{#}}} {{#if(( !d.child || !d.child.length ) && d.href){ }} layuimini-href="{{d.href}}" {{#}}} {{#if( d.target){ }}  target="{{d.target}}" {{#}}}> {{#if( d.icon){ }}  <i class="{{d.icon}}"></i> {{#}}} <span class="layui-left-nav"> {{d.title}}</span></a> {{# if(d.children){}} {{d.children}} {{#}}}</dd>'
+                menuHtml = '<dd class="menu-dd {{d.childOpenClass}} {{ d.className }}"> <a href="javascript:;"  {{#if( d.menu){ }}  data-menu="{{d.menu}}" {{#}}} {{#if( d.id){ }}  id="{{d.id}}" {{#}}} {{#if(( !d.children || !d.children.length ) && d.href){ }} layuimini-href="{{d.href}}" {{#}}} {{#if( d.target){ }}  target="{{d.target}}" {{#}}}> {{#if( d.icon){ }}  <i class="{{d.icon}}"></i> {{#}}} <span class="layui-left-nav"> {{d.title}}</span></a> {{# if(d.children){}} {{d.children}} {{#}}}</dd>'
             }
             return laytpl(menuHtml).render(menu);
         },
@@ -82,8 +82,8 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
             var me = this ;
             menuList = menuList || [] ;
             var html = this.each(menuList,function (idx,menu) {
-                if(menu.child && menu.child.length){
-                    menu.children = me.renderChildrenMenu(menu.child,{ childOpenClass: options.childOpenClass || '' });
+                if(menu.children && menu.children.length){
+                    menu.children = me.renderChildrenMenu(menu.children,{ childOpenClass: options.childOpenClass || '' });
                 }
                 menu.className = "" ;
                 menu.childOpenClass = options.childOpenClass || ''
@@ -94,8 +94,8 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
         renderLeftMenu :function(leftMenus,options){
             options = options || {};
             var me = this ;
-            var leftMenusHtml =  me.each(leftMenus || [],function (idx,leftMenu) { // 左侧菜单遍历
-                var children = me.renderChildrenMenu(leftMenu.child, { childOpenClass:options.childOpenClass });
+            var leftMenusHtml =  me.each(leftMenus,function (idx,leftMenu) { // 左侧菜单遍历
+                var children = me.renderChildrenMenu(leftMenu.children, { childOpenClass:options.childOpenClass });
                 var leftMenuHtml = me.compileMenu({
                     href:leftMenu.href,
                     target:leftMenu.target,
@@ -106,7 +106,6 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
                 });
                 return leftMenuHtml ;
             }).join("");
-
             leftMenusHtml = me.compileMenuContainer({ id:options.parentMenuId,className:options.leftMenuCheckDefault,children:leftMenusHtml }) ;
             return leftMenusHtml ;
         },
@@ -116,7 +115,8 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
          * @param menuChildOpen 是否默认展开
          */
         renderMultiModule: function (menuList, menuChildOpen) {
-            menuList = menuList || [];
+            menuList = menuList|| [];
+            let menulists = menuList;
             var me = this ;
             var headerMenuHtml = '',
                 headerMobileMenuHtml = '',
@@ -126,7 +126,7 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
                 headerMenuCheckDefault = 'layui-this';
 
             if (menuChildOpen) childOpenClass = ' layui-nav-itemed';
-            var headerMenuHtml = this.each(menuList, function (index, val) { //顶部菜单渲染
+            var headerMenuHtml = this.each(menulists, function (index, val) { //顶部菜单渲染
                 var menu = 'multi_module_' + index ;
                 var id = menu+"HeaderId";
                 var topMenuItemHtml = "" ;
@@ -139,7 +139,7 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
                     target:"",
                     children:""
                 });
-                leftMenuHtml+=me.renderLeftMenu(val.child,{
+                leftMenuHtml+=me.renderLeftMenu(menulists,{
                     parentMenuId:menu,
                     childOpenClass:childOpenClass,
                     leftMenuCheckDefault:leftMenuCheckDefault
@@ -150,7 +150,7 @@ layui.define(["element","laytpl" ,"jquery"], function (exports) {
                 return topMenuItemHtml ;
             }).join("");
             $('.layui-layout-body').addClass('layuimini-multi-module'); //多模块标识
-         //   $('.layuimini-menu-header-pc').html(headerMenuHtml); //电脑
+            //$('.layuimini-menu-header-pc').html(headerMenuHtml); //电脑
             $('.layuimini-menu-left').html(leftMenuHtml);
             $('.layuimini-menu-header-mobile').html(headerMobileMenuHtml); //手机
             element.init();

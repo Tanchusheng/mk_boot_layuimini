@@ -14,13 +14,13 @@
       "icon": "fa fa-address-book",
       "href": "",
       "target": "_self",
-      "child": [
+      "children": [
         {
           "title": "主页模板",
           "href": "",
           "icon": "fa fa-home",
           "target": "_self",
-          "child": [
+          "children": [
             {
               "title": "主页一",
               "href": "page/welcome-1.html",
@@ -64,7 +64,7 @@
           "href": "",
           "icon": "fa fa-calendar",
           "target": "_self",
-          "child": [
+          "children": [
             {
               "title": "普通表单",
               "href": "page/form.html",
@@ -84,7 +84,7 @@
           "href": "",
           "icon": "fa fa-flag-o",
           "target": "_self",
-          "child": [
+          "children": [
             {
               "title": "登录-1",
               "href": "page/login-1.html",
@@ -104,7 +104,7 @@
           "href": "",
           "icon": "fa fa-home",
           "target": "_self",
-          "child": [
+          "children": [
             {
               "title": "404页面",
               "href": "page/404.html",
@@ -118,7 +118,7 @@
           "href": "",
           "icon": "fa fa-snowflake-o",
           "target": "",
-          "child": [
+          "children": [
             {
               "title": "按钮示例",
               "href": "page/button.html",
@@ -140,7 +140,7 @@
       "icon": "fa fa-lemon-o",
       "href": "",
       "target": "_self",
-      "child": [
+      "children": [
         {
           "title": "图标列表",
           "href": "page/icon.html",
@@ -190,25 +190,25 @@
       "icon": "fa fa-slideshare",
       "href": "",
       "target": "_self",
-      "child": [
+      "children": [
         {
           "title": "多级菜单",
           "href": "",
           "icon": "fa fa-meetup",
           "target": "",
-          "child": [
+          "children": [
             {
               "title": "按钮1",
               "href": "page/button.html?v=1",
               "icon": "fa fa-calendar",
               "target": "_self",
-              "child": [
+              "children": [
                 {
                   "title": "按钮2",
                   "href": "page/button.html?v=2",
                   "icon": "fa fa-snowflake-o",
                   "target": "_self",
-                  "child": [
+                  "children": [
                     {
                       "title": "按钮3",
                       "href": "page/button.html?v=3",

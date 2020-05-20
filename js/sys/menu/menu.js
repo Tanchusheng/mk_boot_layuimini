@@ -1,11 +1,11 @@
 //获取菜单列表接口
-const listUrl = baseUrl+"system/menu/treelist";
+const listUrl = baseUrl+"system/menu/treeList";
 //添加菜单接口（父菜单和子菜单共用）
-const addUrl = baseUrl+"system/menu/add";
+const addUrl = baseUrl+"system/menu/insertMenu";
 //编辑菜单接口
-const editUrl = baseUrl+'system/menu/edit';
+const editUrl = baseUrl+'system/menu/editMenu';
 //删除菜单接口
-const deleteUrl = baseUrl+'system/menu/delete';
+const deleteUrl = baseUrl+'system/menu/deleteMenu';
 
 layui.use(['layer','util', 'treeTable','laytpl'], function () {
     var $ = layui.jquery;
@@ -36,7 +36,7 @@ layui.use(['layer','util', 'treeTable','laytpl'], function () {
             {field: 'icon', title: '图标', width: 140},
             {field: 'sort', title: '排序', width: 80},
             {
-                field: 'isMenu', width: 120, align: 'center', templet: function (d) {
+                field: 'isMenu', width: 120, align: 'center', toolbar: function (d) {
                     if (d.isMenu === 1) {
                         return '<span class="layui-badge layui-badge-warm">按钮</span>';
                     }

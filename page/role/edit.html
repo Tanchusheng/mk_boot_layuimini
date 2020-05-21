@@ -65,7 +65,6 @@
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
 <script src="../../api/baseApi.js" charset="utf-8"></script>
-<script src="../../api/roleApi.js" charset="utf-8"></script>
 <script>
     Array.prototype.contains = function ( needle ) {
         for (i in this) {
@@ -86,7 +85,7 @@
         //获取根据角色ID获取菜单数据
         function getMenuByRole(){
             $.get({
-                url: getMenuByRoleUrl,
+                url: baseUrl+"system/role/getMenuByRole",
                 dataType: "json",
                 timeout:300000,
                 data:{id:localData.role.id},
@@ -223,7 +222,7 @@
 
 
             $.post({
-                url: editUrl,
+                url:  baseUrl+"system/role/edit",
                 data:JSON.stringify(data.field),
                 dataType: "json",
                 timeout:300000,

@@ -67,7 +67,6 @@
 </form>
 <script src="../../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script src="../../api/baseApi.js" charset="utf-8"></script>
-<script src="../../api/roleApi.js" charset="utf-8"></script>
 <script>
     Array.prototype.contains = function ( needle ) {
         for (i in this) {
@@ -85,7 +84,7 @@
         //获取所有菜单数据
         function getAllMenus(){
             $.get({
-                url: getAllMenusListUrl,
+                url: baseUrl + "system/role/getAllMenusList",
                 dataType: "json",
                 timeout:300000,
                 xhrFields:{withCredentials: true},
@@ -169,7 +168,7 @@
             data.field.menuSet = menus;
 
             $.post({
-                url: addUrl,
+                url: baseUrl+"system/role/add",
                 data:JSON.stringify(data.field),
                 dataType: "json",
                 timeout:300000,

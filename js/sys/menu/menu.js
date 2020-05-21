@@ -36,7 +36,7 @@ layui.use(['layer','util', 'treeTable','laytpl'], function () {
             {field: 'icon', title: '图标', width: 140},
             {field: 'sort', title: '排序', width: 80},
             {
-                field: 'isMenu', width: 120, align: 'center', toolbar: function (d) {
+                field: 'isMenu', width: 120, align: 'center', template: function (d) {
                     if (d.isMenu === 1) {
                         return '<span class="layui-badge layui-badge-warm">按钮</span>';
                     }
